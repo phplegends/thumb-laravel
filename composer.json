@@ -1,7 +1,6 @@
 {
     "name": "phplegends/thumb-laravel",
-    "description": "This packages provides a thumb library for laravel 4",
-    "license": "MIT",
+    "description": "",
     "authors": [
         {
             "name": "Wallace de Souza",
@@ -9,13 +8,14 @@
         }
     ],
     "require": {
-        "php" :  ">=5.4",
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*",
         "phplegends/thumb" : "dev-master"
     },
-
-    "autoload" : {
-        "psr-4" : {
-            "PHPLegends\\ThumbLaravel\\" : "src/ThumbLaravel"
+    "autoload": {
+        "psr-0": {
+            "Phplegends\\ThumbLaravel": "src/"
         }
-    }
+    },
+    "minimum-stability": "stable"
 }

@@ -21,9 +21,9 @@ class ThumbServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$this->bind('thumb', function ($app)
+		$this->app->bind('thumb', function ($app)
 		{
-			return new Thumb($app['url'], $app['html']);
+			return new Thumb($app);
 		});
 	}
 
