@@ -5,11 +5,10 @@
     "authors": [
         {
             "name": "Wallace de Souza",
-            "email": "wallacemaxters@gmail.coim"
+            "email": "wallacemaxters@gmail.com"
         }
     ],
     "require": {
-        "illuminate/support" : "4.2.*",
         "phplegends/thumb"   : "dev-master"
     }
 }
