@@ -9,6 +9,13 @@
         }
     ],
     "require": {
-        "phplegends/thumb"   : "dev-master"
+        "php" :  ">=5.4",
+        "phplegends/thumb" : "dev-master"
+    },
+
+    "autoload" : {
+        "psr-4" : {
+            "PHPLegends\\ThumbLaravel\\" : "src/ThumbLaravel"
+        }
     }
 }
