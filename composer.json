@@ -13,8 +13,8 @@
         "phplegends/thumb" : "1.*"
     },
     "autoload": {
-        "psr-0": {
-            "Phplegends\\ThumbLaravel": "src/"
+        "psr-4": {
+            "PHPLegends\\ThumbLaravel\\": "src/ThumbLaravel"
         }
     },
     "minimum-stability": "stable"
