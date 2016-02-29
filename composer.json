@@ -1,6 +1,7 @@
 {
     "name": "phplegends/thumb-laravel",
-    "description": "",
+    "description": "Package for image thumb creation in Laravel",
+    "license" : "MIT",
     "authors": [
         {
             "name": "Wallace de Souza",
