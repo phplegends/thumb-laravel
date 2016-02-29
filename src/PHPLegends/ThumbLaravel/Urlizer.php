@@ -19,11 +19,6 @@ class Urlizer
 	/**
 	* @var string
 	*/
-	protected $publicPath;
-
-	/**
-	* @var string
-	*/
 	protected $thumbPath;
 
 	/**
