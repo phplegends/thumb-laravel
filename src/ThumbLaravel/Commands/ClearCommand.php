@@ -38,6 +38,13 @@ class ClearCommand extends Command
 
 		$thumbPath = $app['config']->get('thumb::config.folder');
 
+		if (strval($thumbPath) === '') {
+
+			throw new \UnexpectedValueException(
+				'The "thumb::config.folder" cannot be empty'
+			);
+		}
+
 		$thumbDir = public_path($thumbPath);
 
 		$app['files']->deleteDirectory($thumbDir, true);
