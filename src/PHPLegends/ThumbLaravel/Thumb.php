@@ -11,45 +11,53 @@ use Illuminate\Foundation\Application;
 class Thumb
 {
 
+	/**
+	* @var \Illuminate\Foundation\Application
+	*/
 	protected $app;
-
-	/**
-	* @var string
-	*/
-
-	protected $publicPath = 'public';
-
-	/**
-	* @var string
-	*/
-
-	protected $thumbPath = '_thumbs';
 
 	public function __construct(Application $app)
 	{
 		$this->app = $app;
 	}
 
-	public function url($image, $width, $height = 0)
+	/**
+	* Generate an url for image thumb
+	* @param string $image
+	* @param int $width
+	* @param float $height
+	*/
+	public function url($image, $width, $height = 0, $cache = true)
 	{	
 
 		$urlizer = $this->getUrlizer($image);
 
 		$imageFile = $urlizer->getPublicFilename(); 
 
-		$destiny = $urlizer->buildThumbFilename(
-			md5($image . $width . $height)
-		); 
+		$thumbBasename = md5($image . $width . $height) . '-' . filemtime($imageFile);
+
+		$destiny = $urlizer->buildThumbFilename($thumbBasename); 
+
+		$saveMethod = $cache ? 'getCache' : 'save';
 
 		$filename = $this->create($imageFile, $width, $height)
-						  ->save($destiny)
+						  ->{$saveMethod}($destiny)
 						  ->getFilename();
 		
-		$thumbUrl = $urlizer->getThumbUrlPath() . '/' . $filename;
+		$thumbUrl = $urlizer->buildThumbUrl($filename);
 
 		return $this->app['url']->to($thumbUrl);
 	}
 
+	/**
+	 * Generate an HTML image element.
+	 *
+	 * @param  string  $url
+	 * @param  string  $alt
+	 * @param  array   $attributes
+	 * @param  bool    $secure
+	 * @return string
+	*/
 	public function image($image, $alt = null, $attributes = array(), $secure = null)
 	{
 
@@ -69,22 +77,29 @@ class Thumb
 		return $this->app['html']->image($url, $alt, $attributes, $secure = null);
 	}
 
+	/**
+	* Creates a new instance of \PHPLegends\Thumb\Thumb
+	* @param string $image
+	* @param float $width
+	* @param float $height
+	*/
 	public function create($image, $width, $height)
 	{
 		return new BaseThumb($image, $width, $height);
 	}
 
-	public function getUrlizer($imageFile)
+	/**
+	* Retrives a instance of urlizer
+	* @param string $image
+	* @return \PHPLegends\ThumbLaravel\Urlizer
+	*/
+	protected function getUrlizer($image)
 	{
-		$urlizer = new Urlizer($imageFile);
+		$urlizer = new Urlizer($this->app['url'], $image);
 
-		$config = $this->app['config']->get('thumb::config.php');
+		$config = $this->app['config']->get('thumb::config');
 
-		$publicPath = array_get($config, 'public_path', 'public');
-
-		$thumbPath = array_get($config, 'thumb_path', '_thumbs');
-
-		$urlizer->setPublicPath($publicPath);
+		$thumbPath = array_get($config, 'folder', '_thumbs');
 		
 		$urlizer->setThumbPath($thumbPath);
 

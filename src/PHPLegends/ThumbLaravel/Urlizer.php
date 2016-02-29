@@ -1,31 +1,45 @@
 <?php
 
 namespace PHPLegends\ThumbLaravel;
+use Illuminate\Routing\UrlGenerator;
 
+/**
+* @author Wallace de Souza Vizerra <wallacemaxters@gmail.com>
+* Works with filename to generate a public url for thumbs in Laravel
+*/
 class Urlizer
 {
 
-	protected $publicPath;
+	/**
+	* @var \Illuminate\Routing\UrlGenerator
+	*/
 
-	protected $thumbPath;
-
-	protected $relative;
-
-
-	public function __construct($relative)
-	{
-		$this->relative = $relative;
-	}
+	protected $url;
 
 	/**
-	* @param string $path
-	* @return 
+	* @var string
 	*/
-	public function setPublicPath($path)
-	{
-	    $this->publicPath = trim($path, '/');
+	protected $publicPath;
 
-	    return $this;
+	/**
+	* @var string
+	*/
+	protected $thumbPath;
+
+	/**
+	* @var string
+	*/
+	protected $relative;
+
+	/**
+	* 
+	* @param string $relative
+	*/
+	public function __construct(UrlGenerator $url, $relative)
+	{
+		$this->url = $url;
+
+		$this->relative = $relative;
 	}
 
 	/**
@@ -33,7 +47,7 @@ class Urlizer
 	*/
 	public function getPublicPath()
 	{
-	    return $this->publicPath;
+	    return public_path();
 	}
 
 	/**
@@ -45,6 +59,11 @@ class Urlizer
 	    return $this->getPublicPath() . '/' . $this->relative;
 	}
 
+	/**
+	* Set directory to use by stores thumb (into public path)
+	* @param string $path
+	* @return \PHPLegends\ThumbLaravel\Urlizer
+	*/
 	public function setThumbPath($path)
 	{
 	    $this->thumbPath = trim($path, '/');
@@ -52,16 +71,28 @@ class Urlizer
 	    return $this;
 	}
 
+	/**
+	* Retrieves the for thumbpath
+	* @return string
+	*/
 	public function getThumbUrlPath()
 	{
 	    return '/' . $this->thumbPath;
 	}
 
+	/**
+	* @return string
+	*/
 	public function getThumbPath()
 	{
 		return $this->getPublicPath() . '/' . $this->thumbPath;
 	}
 
+	/**
+	* Builds the filename for thumb image
+	* 
+	* @return string
+	*/
 	public function buildThumbFilename($filename)
 	{
 		$extension = pathinfo($filename, PATHINFO_EXTENSION);
@@ -74,9 +105,13 @@ class Urlizer
 		return $this->getThumbPath() . '/' . $filename;
 	}
 
+	/**
+	* Builds the thumb url for image
+	* @return string
+	*/
 	public function buildThumbUrl($filename)
 	{
-		return $this->getThumbUrlPath() . '/' . $filename;
+		return $this->url->to($this->getThumbUrlPath(), [$filename]);
 	}
 
 }

@@ -4,6 +4,8 @@ namespace PHPLegends\ThumbLaravel;
 
 use Illuminate\Support\ServiceProvider;
 
+use PHPLegends\ThumbLaravel\Commands\ClearCommand;
+
 class ThumbServiceProvider extends ServiceProvider
 {
 
@@ -19,11 +21,25 @@ class ThumbServiceProvider extends ServiceProvider
 	 *
 	 * @return void
 	 */
+
+	public function boot()
+	{
+		$this->package('phplegends/thumb-laravel', 'thumb');
+
+		$this->commands('thumb.clear');
+	}
+
+
 	public function register()
 	{
 		$this->app->bind('thumb', function ($app)
 		{
 			return new Thumb($app);
+		});
+
+		$this->app->bind('thumb.clear', function ()
+		{
+			return new ClearCommand;		
 		});
 	}
 
