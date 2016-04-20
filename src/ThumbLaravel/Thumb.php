@@ -34,11 +34,12 @@ class Thumb
 
 		$imageFile = $urlizer->getPublicFilename(); 
 
+
 		if (! file_exists($imageFile))
 		{
 			throw new \UnexpectedValueException("The file name '{$imageFile}' doesn't exists.");
 		}
-
+		
 		$thumbBasename = md5($image . $width . $height) . '-' . filemtime($imageFile);
 
 		$destiny = $urlizer->buildThumbFilename($thumbBasename); 
