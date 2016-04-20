@@ -41,8 +41,7 @@ class Thumb
 		$saveMethod = $cache ? 'getCache' : 'save';
 
 		$filename = $this->create($imageFile, $width, $height)
-						  ->{$saveMethod}($destiny)
-						  ->getFilename();
+						  ->{$saveMethod}($destiny);
 		
 		$thumbUrl = $urlizer->buildThumbUrl($filename);
 
